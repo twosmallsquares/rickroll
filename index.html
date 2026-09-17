@@ -1,88 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Stream Preview</title>
-    <style>
-        body {
-            background-color: #111;
-            color: white;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding-top: 50px;
-        }
-        iframe {
-            border: none;
-            border-radius: 8px;
-            box-shadow: 0px 4px 15px rgba(0,0,0,0.5);
-        }
-        h1 {
-            margin-top: 20px;
-            font-size: 2rem;
-        }
-        .start-btn {
-            background-color: #ff0000;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Definitely Not Suspicious</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 25px;
+    }
+
+    .video {
+      width: min(800px, 90vw);
+      aspect-ratio: 16 / 9;
+      border: 3px solid #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 12px 24px;
+      border: 0;
+      border-radius: 8px;
+      background: #e63946;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ff4d5a;
+    }
+
+    /* Fake browser-style dialog */
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dialog {
+      width: min(380px, 90vw);
+      background: #f5f5f5;
+      color: #111;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      text-align: left;
+      overflow: hidden;
+    }
+
+    .dialog-title {
+      padding: 15px 18px;
+      font-weight: bold;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .dialog-body {
+      padding: 20px 18px;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px 15px 15px;
+    }
+
+    .dialog-actions button {
+      margin: 0;
+      padding: 8px 20px;
+      background: #1976d2;
+    }
+  </style>
 </head>
+
 <body>
 
-    <!-- Modern browsers completely block new tabs unless triggered by a click -->
-    <button class="start-btn" onclick="engageTrap()">Click to Unmute / Play Video</button>
+  <h1>u got rickrolled</h1>
 
-    <div id="content" style="display:none;">
-        <iframe width="500" height="500" src="https://youtube.com" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-        <h1>You thought :></h1>
+  <div class="video">
+    <iframe
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1"
+      title="Rickroll"
+      allow="autoplay; encrypted-media"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <button onclick="showRickrollPopup()">
+    Click me
+  </button>
+
+  <div class="overlay" id="popup">
+    <div class="dialog">
+      <div class="dialog-title">Browser</div>
+
+      <div class="dialog-body">
+        u got rickrolled 😎
+      </div>
+
+      <div class="dialog-actions">
+        <button onclick="closeRickrollPopup()">OK</button>
+      </div>
     </div>
+  </div>
 
-<script>
-let spawnURL;
+  <script>
+    function showRickrollPopup() {
+      document.getElementById("popup").style.display = "flex";
+    }
 
-function createTauntingPage() {
-    // Generates a temporary data URL that displays the "u got rickrolled" message
-    const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-        <head><title>Gotcha!</title></head>
-        <body style="background:#111; color:red; font-family:sans-serif; text-align:center; padding-top:20vh;">
-            <h1>u got rickrolled.</h1>
-            <script>
-                // If they close this child tab, tell the main tab to open a replacement
-                window.onbeforeunload = function() {
-                    if (window.opener && !window.opener.closed) {
-                        window.opener.postMessage('respawn', '*');
-                    }
-                };
-            <\/script>
-        </body>
-        </html>
-    `;
-    return 'data:text/html;charset=utf-8,' + encodeURIComponent(htmlContent);
-}
+    function closeRickrollPopup() {
+      document.getElementById("popup").style.display = "none";
+    }
 
-function openTauntTab() {
-    window.open(spawnURL, "_blank", "width=400,height=400");
-}
-
-function engageTrap() {
-    // Hide button, show video content
-    document.querySelector('.start-btn').style.display = 'none';
-    document.getElementById('content').style.display = 'block';
-
-    spawnURL = createTauntingPage();
-
-    // Open the initial 2 annoying tabs
-    openTauntTab();
-    openTauntTab();
-</script>
+    // A normal leave confirmation. The browser controls the actual dialog.
+    window.addEventListener("beforeunload", function (event) {
+      event.preventDefault();
+      event.returnValue = "";
+    });
+  </script>
 
 </body>
 </html>
