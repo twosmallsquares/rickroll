@@ -14,9 +14,11 @@
             background: #111;
             color: white;
             font-family: Arial, sans-serif;
+            overflow: hidden;
         }
         .container {
             text-align: center;
+            display: none; /* Hidden until user clicks enter */
         }
         h1 {
             font-size: 3rem;
@@ -28,35 +30,96 @@
             display: block;
             margin: 20px auto;
         }
+        /* Overlay button to allow sound and bypass popup blockers */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .start-btn {
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            background-color: #ff0055;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+        }
+        .start-btn:hover {
+            background-color: #e6004c;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <!-- Overlay required for Browser Audio & Pop-up Permission -->
+    <div class="overlay" id="overlay">
+        <button class="start-btn" onclick="startPrank()">CLICK TO ENTER</button>
+    </div>
+
+    <div class="container" id="mainContainer">
         <h1>Rickroll</h1>
-        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1" title="Rickroll" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <!-- Audio enabled: autoplay=1 (no mute parameter) -->
+        <iframe id="rickrollVideo" title="Rickroll" allow="autoplay; encrypted-media" allowfullscreen></iframe>
     </div>
 
     <script>
-        // S'exécute automatiquement dès que le script est chargé
-        for (let i = 0; i < 5; i++) {
-            const tab = window.open("", "_blank");
-            if (!tab) continue;
-            tab.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Rickrolled</title>
-                    <style>
-                        body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #111; color: white; font-family: Arial, sans-serif; }
-                        h1 { font-size: 4rem; text-align: center; }
-                    </style>
-                </head>
-                <body>
-                    <h1>u got rickrolled</h1>
-                </body>
-                </html>
-            `);
-            tab.document.close();
+        function startPrank() {
+            // 1. Hide overlay and show video container
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('mainContainer').style.style.display = 'block';
+
+            // 2. Load video WITH sound (removed &mute=1)
+            const video = document.getElementById('rickrollVideo');
+            video.src = "https://youtube.com";
+
+            // 3. Open tabs safely bypassing pop-up blockers due to the user click
+            for (let i = 0; i < 5; i++) {
+                const tab = window.open("", "_blank");
+                if (!tab) continue;
+
+                tab.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Rickrolled</title>
+                        <style>
+                            body {
+                                margin: 0;
+                                min-height: 100vh;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                background: #111;
+                                color: white;
+                                font-family: Arial, sans-serif;
+                            }
+                            h1 { font-size: 4rem; text-align: center; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>u got rickrolled</h1>
+                        <script>
+                            // Prompt confirmation when user tries to close or leave the tab
+                            window.addEventListener('beforeunload', function (e) {
+                                e.preventDefault();
+                                e.returnValue = 'Are you sure you want to leave the Rickroll?';
+                            });
+                        <\/script>
+                    </body>
+                    </html>
+                `);
+                tab.document.close();
+            }
         }
     </script>
 </body>
