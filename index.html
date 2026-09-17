@@ -1,119 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rickroll</title>
-
-  <style>
-    body {
-      margin: 0;
-      background: #111;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-
-    h1 {
-      margin: 25px;
-    }
-
-    .video {
-      width: min(800px, 90vw);
-      aspect-ratio: 16 / 9;
-      margin: 20px auto;
-    }
-
-    iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-    }
-
-    button {
-      padding: 12px 24px;
-      border: 0;
-      border-radius: 8px;
-      background: #e63946;
-      color: white;
-      font-size: 17px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-
-<body>
-
-  <h1>Rickroll</h1>
-
-  <div class="video">
-    <iframe
-      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1"
-      title="Rickroll"
-      allow="autoplay; encrypted-media"
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <button id="start">Start Rickroll</button>
-
-  <script>
-    let extraTab = null;
-
-    document.getElementById("start").addEventListener("click", () => {
-      // Open the extra tab as a direct result of the user's click.
-      extraTab = window.open("", "_blank");
-
-      if (!extraTab) {
-        alert("Your browser blocked the extra tab.");
-        return;
-      }
-
-      extraTab.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Rickrolled</title>
-          <style>
-            body {
-              margin: 0;
-              min-height: 100vh;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              background: #111;
-              color: white;
-              font-family: Arial, sans-serif;
-            }
-
-            h1 {
-              font-size: 4rem;
-              text-align: center;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>u got rickrolled</h1>
-        </body>
-        </html>
-      `);
-
-      extraTab.document.close();
-
-      // Ask whether the user wants to close the extra tab.
-      setTimeout(() => {
-        if (extraTab && !extraTab.closed) {
-          const closeIt = confirm(
-            "Do you want to close the extra Rickroll tab?"
-          );
-
-          if (closeIt) {
-            extraTab.close();
-          }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rickroll</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #111;
+            color: white;
+            font-family: Arial, sans-serif;
         }
-      }, 1000);
-    });
-  </script>
+        .container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+        }
+        iframe {
+            width: min(800px, 90vw);
+            aspect-ratio: 16 / 9;
+            border: 0;
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Rickroll</h1>
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1" title="Rickroll" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    </div>
 
+    <script>
+        // S'exécute automatiquement dès que le script est chargé
+        for (let i = 0; i < 5; i++) {
+            const tab = window.open("", "_blank");
+            if (!tab) continue;
+            tab.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Rickrolled</title>
+                    <style>
+                        body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #111; color: white; font-family: Arial, sans-serif; }
+                        h1 { font-size: 4rem; text-align: center; }
+                    </style>
+                </head>
+                <body>
+                    <h1>u got rickrolled</h1>
+                </body>
+                </html>
+            `);
+            tab.document.close();
+        }
+    </script>
 </body>
 </html>
