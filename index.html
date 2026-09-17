@@ -20,6 +20,7 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      cursor: pointer;
     }
 
     .container {
@@ -29,7 +30,6 @@
 
     h1 {
       font-size: clamp(2rem, 6vw, 4rem);
-      margin-bottom: 25px;
     }
 
     .video {
@@ -55,13 +55,29 @@
 
     <div class="video">
       <iframe
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&loop=1&playlist=dQw4w9WgXcQ"
+        id="player"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1"
         title="Rick Astley - Never Gonna Give You Up"
         allow="autoplay; encrypted-media"
         allowfullscreen>
       </iframe>
     </div>
   </main>
+
+  <script>
+    let started = false;
+
+    document.addEventListener("click", () => {
+      if (started) return;
+      started = true;
+
+      const player = document.getElementById("player");
+
+      player.src =
+        "https://www.youtube.com/embed/dQw4w9WgXcQ" +
+        "?autoplay=1&loop=1&playlist=dQw4w9WgXcQ";
+    }, { once: true });
+  </script>
 
 </body>
 </html>
