@@ -6,10 +6,6 @@
   <title>You Got Rickrolled</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
       min-height: 100vh;
@@ -19,12 +15,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      cursor: pointer;
     }
 
     .container {
-      width: min(900px, 100%);
+      width: min(900px, 90vw);
       text-align: center;
     }
 
@@ -35,9 +29,8 @@
     .video {
       width: 100%;
       aspect-ratio: 16 / 9;
-      border-radius: 14px;
       overflow: hidden;
-      background: #000;
+      border-radius: 14px;
     }
 
     iframe {
@@ -49,35 +42,17 @@
 </head>
 
 <body>
-
-  <main class="container">
+  <div class="container">
     <h1>u got rickrolled</h1>
 
     <div class="video">
       <iframe
-        id="player"
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&loop=1&playlist=dQw4w9WgXcQ"
         title="Rick Astley - Never Gonna Give You Up"
         allow="autoplay; encrypted-media"
         allowfullscreen>
       </iframe>
     </div>
-  </main>
-
-  <script>
-    let started = false;
-
-    document.addEventListener("click", () => {
-      if (started) return;
-      started = true;
-
-      const player = document.getElementById("player");
-
-      player.src =
-        "https://www.youtube.com/embed/dQw4w9WgXcQ" +
-        "?autoplay=1&loop=1&playlist=dQw4w9WgXcQ";
-    }, { once: true });
-  </script>
-
+  </div>
 </body>
 </html>
