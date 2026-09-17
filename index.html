@@ -6,36 +6,22 @@
   <title>Rickroll</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
-      min-height: 100vh;
       background: #111;
       color: white;
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       text-align: center;
-      gap: 20px;
     }
 
     h1 {
-      font-size: clamp(2rem, 7vw, 4rem);
-      margin: 0;
+      margin: 25px;
     }
 
     .video {
       width: min(800px, 90vw);
       aspect-ratio: 16 / 9;
-      border: 3px solid white;
-      border-radius: 12px;
-      overflow: hidden;
-      background: black;
+      margin: 20px auto;
     }
 
     iframe {
@@ -45,53 +31,49 @@
     }
 
     button {
-      padding: 14px 24px;
+      padding: 12px 24px;
       border: 0;
       border-radius: 8px;
       background: #e63946;
       color: white;
-      font-size: 1.05rem;
-      font-weight: bold;
+      font-size: 17px;
       cursor: pointer;
-    }
-
-    button:hover {
-      background: #ff4d5a;
-    }
-
-    button:active {
-      transform: scale(0.97);
     }
   </style>
 </head>
 
 <body>
 
-  <h1>u got rickrolled 😎</h1>
+  <h1>Rickroll</h1>
 
   <div class="video">
     <iframe
-      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&loop=1&playlist=dQw4w9WgXcQ"
-      title="Rick Astley - Never Gonna Give You Up"
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1"
+      title="Rickroll"
       allow="autoplay; encrypted-media"
       allowfullscreen>
     </iframe>
   </div>
 
-  <button id="rickrollButton">
-    DO NOT CLICK
-  </button>
+  <button id="start">Start Rickroll</button>
 
   <script>
-    const button = document.getElementById("rickrollButton");
+    let extraTab = null;
 
-    function openRickrollTab() {
-      const page = `
+    document.getElementById("start").addEventListener("click", () => {
+      // Open the extra tab as a direct result of the user's click.
+      extraTab = window.open("", "_blank");
+
+      if (!extraTab) {
+        alert("Your browser blocked the extra tab.");
+        return;
+      }
+
+      extraTab.document.write(`
         <!DOCTYPE html>
-        <html lang="en">
+        <html>
         <head>
-          <meta charset="UTF-8">
-          <title>You Got Rickrolled</title>
+          <title>Rickrolled</title>
           <style>
             body {
               margin: 0;
@@ -102,34 +84,34 @@
               background: #111;
               color: white;
               font-family: Arial, sans-serif;
-              text-align: center;
             }
 
             h1 {
-              font-size: clamp(2rem, 8vw, 5rem);
+              font-size: 4rem;
+              text-align: center;
             }
           </style>
         </head>
         <body>
-          <h1>u got rickrolled 😎</h1>
+          <h1>u got rickrolled</h1>
         </body>
         </html>
-      `;
+      `);
 
-      const tab = window.open();
+      extraTab.document.close();
 
-      if (tab) {
-        tab.document.open();
-        tab.document.write(page);
-        tab.document.close();
-      }
-    }
+      // Ask whether the user wants to close the extra tab.
+      setTimeout(() => {
+        if (extraTab && !extraTab.closed) {
+          const closeIt = confirm(
+            "Do you want to close the extra Rickroll tab?"
+          );
 
-    button.addEventListener("click", () => {
-      // Each window.open is directly triggered by the user's click.
-      openRickrollTab();
-      openRickrollTab();
-      openRickrollTab();
+          if (closeIt) {
+            extraTab.close();
+          }
+        }
+      }, 1000);
     });
   </script>
 
